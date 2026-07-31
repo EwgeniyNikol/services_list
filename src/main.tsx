@@ -8,7 +8,7 @@ import App from './App'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.PROD ? '/services_list' : undefined}>
         <App />
       </BrowserRouter>
     </Provider>
