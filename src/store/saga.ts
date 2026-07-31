@@ -12,7 +12,7 @@ import type {
 } from './actions';
 import type { ServiceListItem, ServiceDetails } from './types';
 
-const API_BASE = 'http://localhost:7070/api';
+const API_BASE = 'https://services-list.onrender.com/api';
 
 function* fetchServicesSaga() {
   try {
