@@ -7,18 +7,13 @@ import {
   FETCH_DETAILS_SUCCEEDED,
   FETCH_DETAILS_FAILED,
 } from './actions';
-import type {
-  FetchDetailsRequestedAction,
-} from './actions';
+import type { FetchDetailsRequestedAction } from './actions';
 import type { ServiceListItem, ServiceDetails } from './types';
-
-const API_BASE = 'https://services-list.onrender.com/api';
+import { fetchServices, fetchServiceDetails } from '../api/services';
 
 function* fetchServicesSaga() {
   try {
-    const response: Response = yield call(fetch, `${API_BASE}/services`);
-    if (!response.ok) throw new Error(`Ошибка ${response.status}`);
-    const data: ServiceListItem[] = yield response.json();
+    const data: ServiceListItem[] = yield call(fetchServices);
     yield put({ type: FETCH_SERVICES_SUCCEEDED, payload: data });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Ошибка сети';
@@ -28,12 +23,7 @@ function* fetchServicesSaga() {
 
 function* fetchDetailsSaga(action: FetchDetailsRequestedAction) {
   try {
-    const response: Response = yield call(
-      fetch,
-      `${API_BASE}/services/${action.payload}`
-    );
-    if (!response.ok) throw new Error(`Ошибка ${response.status}`);
-    const data: ServiceDetails = yield response.json();
+    const data: ServiceDetails = yield call(fetchServiceDetails, action.payload);
     yield put({ type: FETCH_DETAILS_SUCCEEDED, payload: data });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Ошибка сети';
